@@ -1,0 +1,29 @@
+name: popa
+
+on: workflow_dispatch
+
+jobs:
+  build:
+
+    runs-on: popa
+    timeout-minutes: 360
+
+    steps:
+    - name: Download Program Ngrok.
+      run: |
+        Invoke-WebRequest https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip -OutFile ngrok.zip
+        Invoke-WebRequest https://raw.githubusercontent.com/Ardhiannn/RDP-Windows2020/main/start.bat -OutFile start.bat
+        Invoke-WebRequest https://telegra.ph/file/d6a11d84f0e308f56cf5a.png -OutFile wallpaper.bmp
+        Invoke-WebRequest https://raw.githubusercontent.com/Ardhiannn/RDP-Windows2020/main/wallpaper.bat -OutFile wallpaper.bat
+    - name: Downloading Launcher.
+      run: |
+        Invoke-WebRequest https://raw.githubusercontent.com/Ardhiannn/RDP-Windows2020/main/launcher/Node.js.lnk -OutFile Node.js.lnk
+        Invoke-WebRequest https://raw.githubusercontent.com/Ardhiannn/RDP-Windows2020/main/launcher/Visual%20Studio%202019.lnk -OutFile "Visual Studio 2019.lnk"
+    - name: Extrak Ngrok File.
+      run: Expand-Archive ngrok.zip
+    - name: Menghubungkan Ke Ngrok Account.
+      run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
+      env:
+        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+    - name: Activated RDP.
+      run: | 
